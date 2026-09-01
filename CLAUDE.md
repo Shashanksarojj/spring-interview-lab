@@ -17,8 +17,11 @@ after each checkpoint. Claude does not proactively write feature code.
       (groupId `com.dwivedicomms`), removed the original Book CRUD
       example entirely, reduced to a bare Spring Boot skeleton, git
       repo initialized.
-- [ ] **1. Domain foundation** — Customer/Address/Category/Product
-      entities + repositories + seed data
+- [x] **1. Domain foundation** — Customer/Address/Category/Product
+      entities + repositories with derived query methods + seed data.
+      `DataSeeder` (CommandLineRunner) was written by Claude at the
+      owner's explicit request, as non-domain boilerplate — an
+      exception to the "owner writes application code" rule below.
 - [ ] **2. Order domain** — Order/OrderItem/Payment, cascades, fetch
       strategies
 - [ ] **3. JPQL & native queries** — joins, subqueries, GROUP
@@ -35,15 +38,23 @@ after each checkpoint. Claude does not proactively write feature code.
 - [ ] **10. Design patterns** — Strategy/Factory/Builder/Observer
       applied to real code
 
-## Current skeleton
+## Current structure
 
 ```
 src/main/java/com/dwivedicomms/springinterviewlab/
   SpringInterviewLabApplication.java
+  domain/
+    Customer.java, Address.java, Category.java, Product.java
+  repositories/
+    CustomerRepository.java, AddressRepository.java,
+    CategoryRepository.java, ProductRepository.java
+  config/
+    DataSeeder.java   (CommandLineRunner, seeds dev data on startup)
 src/main/resources/application.yaml   (H2 in-memory, port 8088)
 src/test/java/com/dwivedicomms/springinterviewlab/
   SpringInterviewLabApplicationTests.java
 ```
 
-No domain classes, security config, or exception handling exist yet —
-all built from scratch starting at Checkpoint 1.
+No security config or exception handling exist yet — those start at
+Checkpoints 7-8. Order/OrderItem/Payment/Review are not yet modeled —
+that's Checkpoint 2.
