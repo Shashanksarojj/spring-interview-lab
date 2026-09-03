@@ -22,8 +22,14 @@ after each checkpoint. Claude does not proactively write feature code.
       `DataSeeder` (CommandLineRunner) was written by Claude at the
       owner's explicit request, as non-domain boilerplate — an
       exception to the "owner writes application code" rule below.
-- [ ] **2. Order domain** — Order/OrderItem/Payment, cascades, fetch
-      strategies
+- [x] **2. Order domain** — Order/OrderItems/Payment entities
+      (cascades, fetch strategies, `@Table(name = "orders")` override
+      since `order` is a reserved SQL keyword). Repositories
+      (OrderRepository/OrderItemsRepository/PaymentRepository) and the
+      `DataSeeder` extension (two seeded orders with items + payments)
+      were written by Claude as one-off exceptions to the "owner
+      writes application code" rule, at the owner's explicit request —
+      same basis as the Checkpoint 1 `DataSeeder` exception.
 - [ ] **3. JPQL & native queries** — joins, subqueries, GROUP
       BY/HAVING, DTO projections, pagination, N+1 fixes
 - [ ] **4. Applied Java 8** — Streams/Optional/method references in
@@ -44,10 +50,15 @@ after each checkpoint. Claude does not proactively write feature code.
 src/main/java/com/dwivedicomms/springinterviewlab/
   SpringInterviewLabApplication.java
   domain/
-    Customer.java, Address.java, Category.java, Product.java
+    Customer.java, Address.java, Category.java, Product.java,
+    Order.java, OrderItems.java, Payment.java
+  enums/
+    StatusEnum.java, PaymentMethodEnum.java, PaymentStatusEnum.java
   repositories/
     CustomerRepository.java, AddressRepository.java,
-    CategoryRepository.java, ProductRepository.java
+    CategoryRepository.java, ProductRepository.java,
+    OrderRepository.java, OrderItemsRepository.java,
+    PaymentRepository.java
   config/
     DataSeeder.java   (CommandLineRunner, seeds dev data on startup)
 src/main/resources/application.yaml   (H2 in-memory, port 8088)
@@ -56,5 +67,4 @@ src/test/java/com/dwivedicomms/springinterviewlab/
 ```
 
 No security config or exception handling exist yet — those start at
-Checkpoints 7-8. Order/OrderItem/Payment/Review are not yet modeled —
-that's Checkpoint 2.
+Checkpoints 7-8. Review is not yet modeled — that's a later checkpoint.

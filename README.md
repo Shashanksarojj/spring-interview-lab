@@ -21,7 +21,7 @@ Current status of each checkpoint is tracked in [`CLAUDE.md`](CLAUDE.md).
 ## Domain
 
 An e-commerce domain (Customer, Address, Category, Product, Order,
-OrderItem, Payment, Review) chosen to cover every common JPA
+OrderItems, Payment, Review) chosen to cover every common JPA
 relationship type and support realistic JPQL/native query practice.
 
 ## Running locally
