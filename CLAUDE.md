@@ -30,8 +30,19 @@ after each checkpoint. Claude does not proactively write feature code.
       were written by Claude as one-off exceptions to the "owner
       writes application code" rule, at the owner's explicit request —
       same basis as the Checkpoint 1 `DataSeeder` exception.
-- [ ] **3. JPQL & native queries** — joins, subqueries, GROUP
-      BY/HAVING, DTO projections, pagination, N+1 fixes
+- [x] **3. JPQL & native queries** — N+1 problem demonstrated and
+      fixed via `JOIN FETCH` (`OrderRepository`); join across
+      Category's self-referencing tree (`ProductRepository`);
+      WHERE-clause subquery (products priced above average, JPQL +
+      native SQL side by side); `GROUP BY`/`HAVING` (category revenue,
+      both as raw `Object[]` and as a `CategoryRevenue` DTO projection
+      via JPQL constructor expression); pagination + sorting via
+      `Pageable`/`Page<T>`. Also fixed two config/setup bugs found
+      along the way: `application.yaml` had `show-sql` nested under
+      `spring.jpa.hibernate` instead of `spring.jpa` (silently
+      disabled SQL logging), and `ProductRepository` briefly imported
+      `java.awt.print.Pageable` instead of
+      `org.springframework.data.domain.Pageable`.
 - [ ] **4. Applied Java 8** — Streams/Optional/method references in
       the service layer
 - [ ] **5. Java 8 standalone lab** — functional interfaces,
@@ -59,6 +70,8 @@ src/main/java/com/dwivedicomms/springinterviewlab/
     CategoryRepository.java, ProductRepository.java,
     OrderRepository.java, OrderItemsRepository.java,
     PaymentRepository.java
+  dto/
+    CategoryRevenue.java   (record, JPQL constructor-expression target)
   config/
     DataSeeder.java   (CommandLineRunner, seeds dev data on startup)
 src/main/resources/application.yaml   (H2 in-memory, port 8088)

@@ -9,9 +9,9 @@ spring:
     password:
 
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: update
-      show-sql: true
 
   h2:
     console:
