@@ -58,8 +58,17 @@ after each checkpoint. Claude does not proactively write feature code.
       `org.springframework.transaction.annotation.Transactional` —
       the JTA version has no `readOnly` attribute, so it failed to
       compile once that attribute was added.
-- [ ] **5. Java 8 standalone lab** — functional interfaces,
-      Collectors, flatMap/reduce
+- [x] **5. Java 8 standalone lab** — new `java8lab` package, no
+      Spring/JPA dependency, each concept a runnable `main`. Custom
+      functional interface (`Discount`, `@FunctionalInterface`) with
+      lambda implementations (`DiscountDemo`). `Collectors.groupingBy`
+      with downstream `Collectors.mapping` and `Collectors.reducing`
+      (`Item` record + `CollectorsDemo`). `flatMap` flattening nested
+      `LabOrder`/`Item` lists into one stream (`FlatMapDemo`). The
+      3-arg `reduce(identity, accumulator, combiner)` form, run both
+      sequentially and via `parallelStream()` to show the combiner
+      only fires when the stream is actually split across threads
+      (`ReduceDemo`).
 - [ ] **6. Testing** — unit, slice, and integration tests
 - [ ] **7. Session-based auth** — DB-backed users, BCrypt, Spring
       Security from scratch
@@ -87,6 +96,9 @@ src/main/java/com/dwivedicomms/springinterviewlab/
     CategoryRevenue.java   (record, JPQL constructor-expression target)
   service/
     OrderService.java, CustomerService.java
+  java8lab/
+    Discount.java, DiscountDemo.java, Item.java, CollectorsDemo.java,
+    LabOrder.java, FlatMapDemo.java, ReduceDemo.java
   config/
     DataSeeder.java   (CommandLineRunner, seeds dev data on startup)
 src/main/resources/application.yaml   (H2 in-memory, port 8088)
