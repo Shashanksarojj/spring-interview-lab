@@ -69,7 +69,16 @@ after each checkpoint. Claude does not proactively write feature code.
       sequentially and via `parallelStream()` to show the combiner
       only fires when the stream is actually split across threads
       (`ReduceDemo`).
-- [ ] **6. Testing** — unit, slice, and integration tests
+- [ ] **6. Testing** — unit, slice, and integration tests. In
+      progress: `OrderServiceTest` (Mockito unit test for
+      `OrderService.calculatedOrderTotal`), `ProductRepositoryTest`
+      (`@DataJpaTest` slice test for `findPricedAboveAverage`), new
+      `OrderController` (`GET /api/orders/{id}/total`) with
+      `OrderControllerTest` (`@WebMvcTest` slice test, `OrderService`
+      mocked via `@MockitoBean`). Still pending: a repository
+      integration test for `OrderItemsRepository`, and a true
+      end-to-end integration test (`@SpringBootTest`) hitting a real
+      HTTP call through the full stack.
 - [ ] **7. Session-based auth** — DB-backed users, BCrypt, Spring
       Security from scratch
 - [ ] **8. JWT auth** — login endpoint, JWT filter, method security
@@ -96,6 +105,8 @@ src/main/java/com/dwivedicomms/springinterviewlab/
     CategoryRevenue.java   (record, JPQL constructor-expression target)
   service/
     OrderService.java, CustomerService.java
+  controller/
+    OrderController.java   (GET /api/orders/{id}/total)
   java8lab/
     Discount.java, DiscountDemo.java, Item.java, CollectorsDemo.java,
     LabOrder.java, FlatMapDemo.java, ReduceDemo.java
@@ -104,6 +115,9 @@ src/main/java/com/dwivedicomms/springinterviewlab/
 src/main/resources/application.yaml   (H2 in-memory, port 8088)
 src/test/java/com/dwivedicomms/springinterviewlab/
   SpringInterviewLabApplicationTests.java
+  service/OrderServiceTest.java        (Mockito unit test)
+  repositories/ProductRepositoryTest.java   (@DataJpaTest slice test)
+  controller/OrderControllerTest.java       (@WebMvcTest slice test)
 ```
 
 No security config or exception handling exist yet — those start at
