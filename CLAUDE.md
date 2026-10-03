@@ -75,10 +75,13 @@ after each checkpoint. Claude does not proactively write feature code.
       (`@DataJpaTest` slice test for `findPricedAboveAverage`), new
       `OrderController` (`GET /api/orders/{id}/total`) with
       `OrderControllerTest` (`@WebMvcTest` slice test, `OrderService`
-      mocked via `@MockitoBean`). Still pending: a repository
-      integration test for `OrderItemsRepository`, and a true
-      end-to-end integration test (`@SpringBootTest`) hitting a real
-      HTTP call through the full stack.
+      mocked via `@MockitoBean`), and
+      `OrderItemsRepositoryIntegrationTest` (`@DataJpaTest`, covers
+      the derived `findByOrderId` query and the
+      `findCategoryRevenueAboveAsDto` GROUP BY/HAVING projection).
+      Still pending: a true end-to-end integration test
+      (`@SpringBootTest`) hitting a real HTTP call through the full
+      stack.
 - [ ] **7. Session-based auth** — DB-backed users, BCrypt, Spring
       Security from scratch
 - [ ] **8. JWT auth** — login endpoint, JWT filter, method security
@@ -117,6 +120,7 @@ src/test/java/com/dwivedicomms/springinterviewlab/
   SpringInterviewLabApplicationTests.java
   service/OrderServiceTest.java        (Mockito unit test)
   repositories/ProductRepositoryTest.java   (@DataJpaTest slice test)
+  repositories/OrderItemsRepositoryIntegrationTest.java  (@DataJpaTest)
   controller/OrderControllerTest.java       (@WebMvcTest slice test)
 ```
 
