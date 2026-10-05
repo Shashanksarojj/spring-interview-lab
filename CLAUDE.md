@@ -69,19 +69,34 @@ after each checkpoint. Claude does not proactively write feature code.
       sequentially and via `parallelStream()` to show the combiner
       only fires when the stream is actually split across threads
       (`ReduceDemo`).
-- [ ] **6. Testing** — unit, slice, and integration tests. In
-      progress: `OrderServiceTest` (Mockito unit test for
+- [x] **6. Testing** — unit, slice, and integration tests.
+      `OrderServiceTest` (Mockito unit test for
       `OrderService.calculatedOrderTotal`), `ProductRepositoryTest`
       (`@DataJpaTest` slice test for `findPricedAboveAverage`), new
       `OrderController` (`GET /api/orders/{id}/total`) with
       `OrderControllerTest` (`@WebMvcTest` slice test, `OrderService`
-      mocked via `@MockitoBean`), and
-      `OrderItemsRepositoryIntegrationTest` (`@DataJpaTest`, covers
-      the derived `findByOrderId` query and the
-      `findCategoryRevenueAboveAsDto` GROUP BY/HAVING projection).
-      Still pending: a true end-to-end integration test
-      (`@SpringBootTest`) hitting a real HTTP call through the full
-      stack.
+      mocked via `@MockitoBean`), `OrderItemsRepositoryIntegrationTest`
+      (`@DataJpaTest`, covers the derived `findByOrderId` query and
+      the `findCategoryRevenueAboveAsDto` GROUP BY/HAVING projection),
+      and `OrderControllerIntegrationTest` (`@SpringBootTest`,
+      `WebEnvironment.RANDOM_PORT`, real HTTP call through the full
+      stack — controller, service, repository, real H2 — via
+      `TestRestTemplate`). Two Spring Boot 4.1 gotchas found along the
+      way: `TestRestTemplate` moved to
+      `org.springframework.boot.resttestclient` and needs the new
+      `spring-boot-restclient`/`spring-boot-resttestclient` test
+      dependencies added to `pom.xml` (not pulled in by the existing
+      starters); and `SecurityFilterAutoConfiguration` /
+      `ServletWebSecurityAutoConfiguration` /
+      `UserDetailsServiceAutoConfiguration` moved to
+      `org.springframework.boot.security.autoconfigure[.web.servlet]`,
+      so excluding default basic-auth security (pre-Checkpoint-7, same
+      as `OrderControllerTest`'s `addFilters = false`) needed the new
+      package names. Also had to point the test at an isolated H2 URL
+      (`jdbc:h2:mem:orderControllerIntegrationTest`) — sharing the
+      app's named `interviewlabdb` with another full-context
+      `@SpringBootTest` caused `DataSeeder` to double-insert and fail
+      on the customer email unique constraint.
 - [ ] **7. Session-based auth** — DB-backed users, BCrypt, Spring
       Security from scratch
 - [ ] **8. JWT auth** — login endpoint, JWT filter, method security
@@ -122,6 +137,8 @@ src/test/java/com/dwivedicomms/springinterviewlab/
   repositories/ProductRepositoryTest.java   (@DataJpaTest slice test)
   repositories/OrderItemsRepositoryIntegrationTest.java  (@DataJpaTest)
   controller/OrderControllerTest.java       (@WebMvcTest slice test)
+  controller/OrderControllerIntegrationTest.java  (@SpringBootTest,
+    RANDOM_PORT, real HTTP via TestRestTemplate)
 ```
 
 No security config or exception handling exist yet — those start at
